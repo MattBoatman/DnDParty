@@ -24,22 +24,16 @@ const getCurrentPercentage = (current, max) => {
 const HealthIndicator = ({ classes, maxHP, currentHP, temporaryHP }) => {
   return (
     <HealthIndicatorWrap>
-      <Typography
-        className={classes.root}
-        variant="caption"
-      >{`${currentHP}/${maxHP}`}</Typography>
       <Wrapper>
-        <LinearProgress
-          classes={{
-            bar: classes.bar,
-            colorSecondary: classes.colorSecondary,
-          }}
-          className={classes.bar}
-          variant="buffer"
-          color="secondary"
-          value={getCurrentPercentage(currentHP, maxHP)}
-          valueBuffer={getCurrentPercentage(currentHP + temporaryHP, maxHP)}
+        <TemporaryHP
+          temporaryHP={getCurrentPercentage(currentHP + temporaryHP, maxHP)}
         />
+        <HealthBar healthPercent={getCurrentPercentage(currentHP, maxHP)}>
+          <Typography
+            className={classes.root}
+            variant="caption"
+          >{`${currentHP}/${maxHP}`}</Typography>
+        </HealthBar>
       </Wrapper>
     </HealthIndicatorWrap>
   );
@@ -54,18 +48,38 @@ const Wrapper = styled.div`
   box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.15);
   width: 100%;
   display: inline-block;
+  height: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  background-color: rgba(245, 237, 240, 1);
 `;
+const HealthBar = styled.div`
+  width: ${props => `${props.healthPercent}%`};
+  display: inline-block;
+  height: 100%;
+  border-radius: 4px;
+  background-color: rgba(164, 74, 63, 1);
+  z-index: 10;
+  position: relative;
+`;
+
+const TemporaryHP = styled.div`
+  width: ${props => `${props.temporaryHP}%`};
+  display: inline-block;
+  border-radius: 4px;
+  background-color: rgba(231, 63, 41, 0.582);
+  position: absolute;
+  height: 20px;
+`;
+
 const styles = {
   root: {
     display: 'inline-block',
     padding: '0 5px',
+    color: 'rgb(253, 203, 197);',
   },
   bar: {
     height: 17,
-  },
-  dashedColorSecondary: {},
-  colorSecondary: {
-    // backgroundColor: '#A3A09C',
   },
 };
 
