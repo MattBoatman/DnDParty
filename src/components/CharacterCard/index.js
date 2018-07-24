@@ -1,42 +1,99 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import HealthIndicator from '../HealthIndicator';
+import QuickStats from '../QuickStats';
 import StatCard from '../StatCard';
+import CharacterInformation from '../CharacterInformation';
 import styled from 'styled-components';
 
+const propTypes = {
+  characterName: PropTypes.string.isRequired,
+  race: PropTypes.string.isRequired,
+  classType: PropTypes.string.isRequired,
+  quickStats: PropTypes.array.isRequired,
+  abilityScores: PropTypes.array.isRequired,
+};
+const defaultProps = {
+  characterName: 'Tug Purple Beard',
+  race: 'Hill Dwarf',
+  classType: 'Lore Bard',
+  quickStats: [
+    { type: 'AC', value: 16 },
+    { type: 'PP', value: 10 },
+    { type: 'Speed', value: 25 },
+    { type: 'Spell Save', value: 16 },
+  ],
+  abilityScores: [
+    { stat: 'CON', score: 16, modifier: 2 },
+    { stat: 'WIS', score: 16, modifier: 2 },
+    { stat: 'STR', score: 16, modifier: 2 },
+    { stat: 'INT', score: 16, modifier: 2 },
+    { stat: 'CHA', score: 16, modifier: 2 },
+  ],
+};
 class CharacterCard extends Component {
   render() {
     return (
       <CharacterWrapper>
-        <Paper classes={{ root: this.props.classes.root }} elevation={4}>
-          <CharacterContent>
-            <Typography variant="headline" component="h3">
-              Tug FireBeard
-            </Typography>
-          </CharacterContent>
-          <HealthIndicator />
+        <Paper elevation={4}>
+          <ContentWrapper>
+            <CharacterInformation
+              characterName={this.props.characterName}
+              race={this.props.race}
+              classType={this.props.classType}
+            />
+            <QuickStatWrapper>
+              <QuickStats quickStats={this.props.quickStats} />
+            </QuickStatWrapper>
+
+            <AbilityWrapper>
+              {this.props.abilityScores.map(obj => (
+                <StatWrapper>
+                  <StatCard
+                    stat={obj.stat}
+                    modifier={obj.modifier}
+                    score={obj.score}
+                  />
+                </StatWrapper>
+              ))}
+            </AbilityWrapper>
+          </ContentWrapper>
+          <HealthBarWrapper>
+            <HealthIndicator />
+          </HealthBarWrapper>
         </Paper>
       </CharacterWrapper>
     );
   }
 }
 
-const AbilityWrapper = styled.div`
+const AbilityWrapper = styled.span`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  margin-left: auto;
+  margin-top: -30px;
+  flex-wrap: wrap;
 `;
-const CharacterContent = styled.div`
-  height: 83%;
+const ContentWrapper = styled.span`
+  display: flex;
+`;
+const StatWrapper = styled.div`
+  margin-left: 5px;
+`;
+const QuickStatWrapper = styled.div`
+  margin: 0 auto;
 `;
 
 const CharacterWrapper = styled.div`
-  display: inline-block;
-  margin-top: 30px;
   width: 100%;
   height: 100px;
+`;
+
+const HealthBarWrapper = styled.div`
+  width: 100%;
+  margin-top: auto;
 `;
 const MiddleText = styled.div`
   display: flex;
@@ -47,13 +104,7 @@ const MiddleText = styled.div`
   justify-content: space-between;
 `;
 
-const styles = {
-  root: {
-    // display: 'inline-block',
-    height: '100%',
-  },
-};
+CharacterCard.propTypes = propTypes;
+CharacterCard.defaultProps = defaultProps;
 
-CharacterCard.propTypes = {};
-
-export default withStyles(styles)(CharacterCard);
+export default CharacterCard;

@@ -23,33 +23,26 @@ const getCurrentPercentage = (current, max) => {
 
 const HealthIndicator = ({ classes, maxHP, currentHP, temporaryHP }) => {
   return (
-    <HealthIndicatorWrap>
-      <Wrapper>
-        <TemporaryHP
-          temporaryHP={getCurrentPercentage(currentHP + temporaryHP, maxHP)}
-        />
-        <HealthBar healthPercent={getCurrentPercentage(currentHP, maxHP)}>
-          <Typography
-            className={classes.root}
-            variant="caption"
-          >{`${currentHP}/${maxHP}`}</Typography>
-        </HealthBar>
-      </Wrapper>
-    </HealthIndicatorWrap>
+    <Wrapper>
+      <TemporaryHP
+        temporaryHP={getCurrentPercentage(currentHP + temporaryHP, maxHP)}
+      />
+      <HealthBar healthPercent={getCurrentPercentage(currentHP, maxHP)}>
+        <Typography
+          className={classes.root}
+          variant="caption"
+        >{`${currentHP}/${maxHP}`}</Typography>
+      </HealthBar>
+    </Wrapper>
   );
 };
 
-const HealthIndicatorWrap = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-`;
 const Wrapper = styled.div`
+  position: relative;
   box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.15);
   width: 100%;
   display: inline-block;
   height: 20px;
-  border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   background-color: rgba(245, 237, 240, 1);
 `;
