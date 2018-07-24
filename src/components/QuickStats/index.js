@@ -6,8 +6,8 @@ import Typography from '@material-ui/core/Typography';
 const QuickStats = ({ quickStats }) => {
   return (
     <ContentWrapper>
-      {quickStats.map(obj => (
-        <StatWrapper>
+      {quickStats.map((obj, idx) => (
+        <StatWrapper key={idx}>
           <Typography variant="subheading" align="center">
             {obj.value}
           </Typography>

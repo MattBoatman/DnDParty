@@ -19,6 +19,9 @@ const ContentWrapper = styled.span`
   flex-direction: column;
   padding: 5px;
   flex-wrap: wrap;
+  @media (max-width: 600px) {
+    margin: 0 auto;
+  }
 `;
 
 CharacterInformation.propTypes = {

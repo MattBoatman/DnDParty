@@ -41,26 +41,19 @@ const MiddleText = styled.div`
   position: relative;
 `;
 
-const styles = theme => ({
+const styles = {
   root: {
     display: 'inline-block',
     padding: '10px 15px',
     width: 20,
-    [theme.breakpoints.down(600)]: {
-      padding: '5px 10px',
-      width: 10,
-    },
   },
   display1: {
     fontSize: '1.125rem',
     letterSpacing: 1,
     textAlign: 'center',
     background: '#ffffff',
-    [theme.breakpoints.down(600)]: {
-      fontSize: '.75rem',
-    },
   },
-});
+};
 
 StatCard.propTypes = propTypes;
 
