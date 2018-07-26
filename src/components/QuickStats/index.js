@@ -22,9 +22,11 @@ const QuickStats = ({ quickStats }) => {
 
 const ContentWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
 `;
 const StatWrapper = styled.div`
-  padding: 10px;
+  padding: 10px 5px;
+  width: 40px;
 `;
 
 QuickStats.propTypes = {

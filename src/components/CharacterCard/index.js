@@ -32,9 +32,11 @@ const defaultProps = {
   classType: 'Lore Bard',
   quickStats: [
     { type: 'AC', value: 15 },
-    { type: 'PP', value: 13 },
+    { type: 'Spell Save', value: 16 },
+    { type: 'Initiative', value: 4 },
+    { type: 'Attack Modifier', value: 8 },
+    { type: 'PP', value: 14 },
     { type: 'Speed', value: 25 },
-    { type: 'Spell Save', value: 15 },
   ],
   abilityScores: [
     { stat: 'STR', score: 14, modifier: 2 },
@@ -67,6 +69,8 @@ const defaultProps = {
   currentHP: 36,
   maxHP: 42,
   temporaryHP: 0,
+  hitDice: 'd8+3',
+  level: 5,
 };
 class CharacterCard extends Component {
   state = {
@@ -138,6 +142,8 @@ class CharacterCard extends Component {
                 characterName={this.props.characterName}
                 race={this.props.race}
                 classType={this.props.classType}
+                hitDice={this.props.hitDice}
+                level={this.props.level}
               />
               <QuickStatWrapper>
                 <QuickStats quickStats={this.props.quickStats} />
