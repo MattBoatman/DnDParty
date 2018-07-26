@@ -20,7 +20,13 @@ const getCurrentPercentage = (current, max) => {
   return 100 / (max / current);
 };
 
-const HealthIndicator = ({ classes, maxHP, currentHP, temporaryHP }) => {
+const HealthIndicator = ({
+  classes,
+  maxHP,
+  currentHP,
+  temporaryHP,
+  editHealth,
+}) => {
   return (
     <Wrapper>
       <TemporaryHP
@@ -28,6 +34,7 @@ const HealthIndicator = ({ classes, maxHP, currentHP, temporaryHP }) => {
       />
       <HealthBar healthPercent={getCurrentPercentage(currentHP, maxHP)}>
         <Typography
+          onClick={editHealth}
           className={classes.root}
           variant="caption"
         >{`${currentHP}/${maxHP}`}</Typography>

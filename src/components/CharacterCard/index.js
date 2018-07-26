@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Paper from '@material-ui/core/Paper';
 import HealthIndicator from '../HealthIndicator';
 import QuickStats from '../QuickStats';
 import StatCard from '../StatCard';
@@ -10,6 +9,11 @@ import MoreInformation from '../MoreInformation';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import Remove from '@material-ui/icons/Remove';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import { withStyles } from '@material-ui/core/styles';
+import EditHealth from './EditHealth';
 
 const propTypes = {
   characterName: PropTypes.string,
@@ -20,14 +24,15 @@ const propTypes = {
   skills: PropTypes.array,
   currentHP: PropTypes.number.isRequired,
   temporaryHP: PropTypes.number,
+  classes: PropTypes.object.isRequired,
 };
 const defaultProps = {
   characterName: 'Tug Purple Beard',
   race: 'Hill Dwarf',
   classType: 'Lore Bard',
   quickStats: [
-    { type: 'AC', value: 16 },
-    { type: 'PP', value: 10 },
+    { type: 'AC', value: 15 },
+    { type: 'PP', value: 13 },
     { type: 'Speed', value: 25 },
     { type: 'Spell Save', value: 15 },
   ],
@@ -59,7 +64,7 @@ const defaultProps = {
     { modifier: 5, name: 'Stealth', ability: 'Dex' },
     { modifier: 2, name: 'Survival', ability: 'Wis' },
   ],
-  currentHP: 40,
+  currentHP: 36,
   maxHP: 42,
   temporaryHP: 0,
 };
@@ -69,12 +74,19 @@ class CharacterCard extends Component {
     maxHP: this.props.maxHP,
     currentHP: this.props.currentHP,
     temporaryHP: this.props.temporaryHP,
+    expanded: false,
+    openHPModal: false,
   };
   cardClick = () => {
     this.setState(prevState => ({
-      showMoreInformation: !prevState.showMoreInformation,
+      expanded: !prevState.expanded,
     }));
   };
+
+  handleExpandClick = () => {
+    this.setState(state => ({ expanded: !state.expanded }));
+  };
+
   handleClick = (e, value) => {
     e.preventDefault();
     e.stopPropagation();
@@ -89,64 +101,94 @@ class CharacterCard extends Component {
       currentHP: prevState.currentHP + val,
     }));
   };
+  openHealthModal = e => {
+    e.stopPropagation();
+    this.setState({
+      openHPModal: true,
+    });
+  };
+  editHealth = (health, temporaryHP) => {
+    this.setState({
+      openHPModal: false,
+    });
+    if (temporaryHP && !isNaN(temporaryHP)) {
+      this.setState(prevState => ({
+        temporaryHP: prevState.temporaryHP + temporaryHP,
+      }));
+    }
+    if (health && !isNaN(health)) {
+      this.setState(prevState => ({
+        currentHP: prevState.currentHP + health,
+      }));
+    }
+  };
   render() {
+    console.log(this.state.openHPModal);
     return (
       <CharacterWrapper>
-        <Paper
-          elevation={4}
-          onClick={this.cardClick}
-          style={{ cursor: 'pointer' }}
-        >
-          <ContentWrapper>
-            <CharacterInformation
-              characterName={this.props.characterName}
-              race={this.props.race}
-              classType={this.props.classType}
-            />
-            <QuickStatWrapper>
-              <QuickStats quickStats={this.props.quickStats} />
-            </QuickStatWrapper>
+        <ExpansionPanel>
+          <ExpansionPanelSummary
+            classes={{
+              root: this.props.classes.root,
+              content: this.props.classes.content,
+            }}
+          >
+            <ContentWrapper>
+              <CharacterInformation
+                characterName={this.props.characterName}
+                race={this.props.race}
+                classType={this.props.classType}
+              />
+              <QuickStatWrapper>
+                <QuickStats quickStats={this.props.quickStats} />
+              </QuickStatWrapper>
 
-            <AbilityWrapper>
-              {this.props.abilityScores.map((obj, idx) => (
-                <StatWrapper key={idx}>
-                  <StatCard
-                    stat={obj.stat}
-                    modifier={obj.modifier}
-                    score={obj.score}
-                  />
-                </StatWrapper>
-              ))}
-            </AbilityWrapper>
-          </ContentWrapper>
-          <HealthBarWrapper>
-            <IconButton
-              color="secondary"
-              onClick={e => this.handleClick(e, -1)}
-              style={{ width: 'auto', height: 'auto' }}
-            >
-              <Remove />
-            </IconButton>
-            <HealthIndicator
-              maxHP={this.state.maxHP}
-              currentHP={this.state.currentHP}
-              temporaryHP={this.state.temporaryHP}
+              <AbilityWrapper>
+                {this.props.abilityScores.map((obj, idx) => (
+                  <StatWrapper key={idx}>
+                    <StatCard
+                      stat={obj.stat}
+                      modifier={obj.modifier}
+                      score={obj.score}
+                    />
+                  </StatWrapper>
+                ))}
+              </AbilityWrapper>
+            </ContentWrapper>
+            <HealthBarWrapper>
+              <IconButton
+                color="secondary"
+                onClick={e => this.handleClick(e, -1)}
+                style={{ width: 'auto', height: 'auto' }}
+              >
+                <Remove />
+              </IconButton>
+              <HealthIndicator
+                maxHP={this.state.maxHP}
+                currentHP={this.state.currentHP}
+                temporaryHP={this.state.temporaryHP}
+                editHealth={this.openHealthModal}
+              />
+              <IconButton
+                color="secondary"
+                onClick={e => this.handleClick(e, 1)}
+                style={{ width: 'auto', height: 'auto', zIndex: 1000 }}
+              >
+                <AddIcon />
+              </IconButton>
+            </HealthBarWrapper>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <MoreInformation
+              skills={this.props.skills}
+              handleClick={(e, val) => this.handleClick(e, val)}
             />
-            <IconButton
-              color="secondary"
-              onClick={e => this.handleClick(e, 1)}
-              style={{ width: 'auto', height: 'auto', zIndex: 1000 }}
-            >
-              <AddIcon />
-            </IconButton>
-          </HealthBarWrapper>
-        </Paper>
-        {this.state.showMoreInformation && (
-          <MoreInformation
-            skills={this.props.skills}
-            onHealthEdit={(e, val) => this.handleClick(e, val)}
-          />
-        )}
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+        <EditHealth
+          openHPModal={this.state.openHPModal}
+          editHealth={this.editHealth}
+        />
       </CharacterWrapper>
     );
   }
@@ -170,7 +212,7 @@ const ContentWrapper = styled.span`
   }
 `;
 const StatWrapper = styled.div`
-  margin-left: 5px;
+  margin-left: 1px;
   @media (max-width: 600px) {
     margin-left: 0;
   }
@@ -191,7 +233,17 @@ const HealthBarWrapper = styled.div`
   align-items: flex-end;
 `;
 
+const styles = {
+  root: {
+    padding: 0,
+  },
+  content: {
+    display: 'block',
+    marginBottom: 0,
+  },
+};
+
 CharacterCard.propTypes = propTypes;
 CharacterCard.defaultProps = defaultProps;
 
-export default CharacterCard;
+export default withStyles(styles)(CharacterCard);
