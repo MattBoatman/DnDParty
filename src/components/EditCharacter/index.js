@@ -8,24 +8,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import styled from 'styled-components';
 
-export default class EditHealth extends React.Component {
-  state = {
-    health: '',
-    tempHP: '',
-  };
-
-  editHealth = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    });
-  };
-
-  handleCB = () => {
-    this.props.editHealth(
-      parseInt(this.state.health),
-      parseInt(this.state.tempHP),
-    );
-  };
+export default class editCharacter extends React.Component {
+  handleCB = () => {};
 
   render() {
     return (
@@ -37,25 +21,7 @@ export default class EditHealth extends React.Component {
         >
           <DialogTitle id="form-dialog-title">Edit Health</DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              Edit health and temporary HP. Use negatives to remove health.
-            </DialogContentText>
-            <InputWrapper>
-              <TextField
-                margin="dense"
-                id="health"
-                label="Edit Health"
-                type="number"
-                onChange={this.editHealth('health')}
-              />
-              <TextField
-                margin="dense"
-                id="health"
-                label="Edit Temporary HP"
-                type="number"
-                onChange={this.editHealth('tempHP')}
-              />
-            </InputWrapper>
+            <DialogContentText>Add a tracker</DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleCB} color="primary">

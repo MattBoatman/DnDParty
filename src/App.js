@@ -13,7 +13,7 @@ class App extends Component {
 }
 
 const PageWrapper = styled.div`
-  width: 60%;
+  width: 73%;
   margin: 50px auto;
   @media (max-width: 1200px) {
     width: 90%;

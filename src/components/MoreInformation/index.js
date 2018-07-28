@@ -2,40 +2,52 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
-import EditHealth from '../CharacterCard/EditHealth';
+import StatList from './StatList';
 
 const propTypes = {
   skills: PropTypes.array.isRequired,
+  savingThrows: PropTypes.array.isRequired,
 };
-const MoreInformation = ({ skills, onHealthEdit }) => {
+const MoreInformation = ({ skills, savingThrows }) => {
   return (
     <Wrapper>
-      <SkillsWrapper>
-        {skills.map((obj, idx) => (
-          <Typography key={idx} style={{ display: 'inline-block' }}>
-            {obj.modifier} - {obj.name}{' '}
-            <Typography variant="caption" style={{ display: 'inline-block' }}>
-              ({obj.ability})
-            </Typography>
-          </Typography>
-        ))}
-      </SkillsWrapper>
+      {skills && (
+        <StatList title="Skills" stats={skills} width={50}>
+          {skills.map((obj, idx) => (
+            <div key={idx}>
+              <Typography style={{ display: 'inline-block', paddingRight: 5 }}>
+                {obj.modifier} - {obj.name}{' '}
+              </Typography>
+              <Typography variant="caption" style={{ display: 'inline-block' }}>
+                ({obj.ability})
+              </Typography>
+            </div>
+          ))}
+        </StatList>
+      )}
+      {savingThrows && (
+        <StatList title="Saving Throws" stats={savingThrows} width={40}>
+          {savingThrows.map((obj, idx) => (
+            <div key={idx}>
+              <Typography style={{ display: 'inline-block' }}>
+                {obj.modifier} -{' '}
+              </Typography>
+              <Typography style={{ display: 'inline-block' }}>
+                {obj.ability}
+              </Typography>
+            </div>
+          ))}
+        </StatList>
+      )}
     </Wrapper>
   );
 };
 
-const Wrapper = styled.div``;
-const SkillsWrapper = styled.div`
+const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  flex-direction: column;
-  height: 120px;
-  @media (max-width: 980px) {
-    height: 200px;
-  }
-  @media (max-width: 600px) {
-    margin-left: inherit;
-  }
+  width: 100%;
+  justify-content: space-between;
 `;
 
 MoreInformation.propTypes = propTypes;

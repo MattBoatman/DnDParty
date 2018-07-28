@@ -9,6 +9,7 @@ import MoreInformation from '../MoreInformation';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import Remove from '@material-ui/icons/Remove';
+import Edit from '@material-ui/icons/Edit';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -22,6 +23,7 @@ const propTypes = {
   quickStats: PropTypes.array,
   abilityScores: PropTypes.array,
   skills: PropTypes.array,
+  savingThrows: PropTypes.array,
   currentHP: PropTypes.number.isRequired,
   temporaryHP: PropTypes.number,
   classes: PropTypes.object.isRequired,
@@ -37,6 +39,7 @@ const defaultProps = {
     { type: 'Attack Modifier', value: 8 },
     { type: 'PP', value: 14 },
     { type: 'Speed', value: 25 },
+    { type: 'Spellcasting', value: 'CHA' },
   ],
   abilityScores: [
     { stat: 'STR', score: 14, modifier: 2 },
@@ -66,6 +69,14 @@ const defaultProps = {
     { modifier: 5, name: 'Stealth', ability: 'Dex' },
     { modifier: 2, name: 'Survival', ability: 'Wis' },
   ],
+  savingThrows: [
+    { modifier: 3, ability: 'STR' },
+    { modifier: 2, ability: 'INT' },
+    { modifier: 7, ability: 'DEX' },
+    { modifier: 2, ability: 'WIS' },
+    { modifier: 4, ability: 'CON' },
+    { modifier: 9, ability: 'CHA' },
+  ],
   currentHP: 36,
   maxHP: 42,
   temporaryHP: 0,
@@ -94,7 +105,7 @@ class CharacterCard extends Component {
   handleClick = (e, value) => {
     e.preventDefault();
     e.stopPropagation();
-    const val = parseInt(value);
+    const val = parseInt(value, 2);
     if (isNaN(val)) return;
     if (this.state.temporaryHP && val < 0) {
       return this.setState(prevState => ({
@@ -126,8 +137,13 @@ class CharacterCard extends Component {
       }));
     }
   };
+
+  handleEditClick = e => {
+    e.stopPropagation();
+    console.log('cl');
+  };
+
   render() {
-    console.log(this.state.openHPModal);
     return (
       <CharacterWrapper>
         <ExpansionPanel>
@@ -137,6 +153,14 @@ class CharacterCard extends Component {
               content: this.props.classes.content,
             }}
           >
+            <Edit
+              style={{
+                position: 'absolute',
+                top: -12,
+                left: -9,
+              }}
+              onClick={this.handleEditClick}
+            />
             <ContentWrapper>
               <CharacterInformation
                 characterName={this.props.characterName}
@@ -187,7 +211,7 @@ class CharacterCard extends Component {
           <ExpansionPanelDetails>
             <MoreInformation
               skills={this.props.skills}
-              handleClick={(e, val) => this.handleClick(e, val)}
+              savingThrows={this.props.savingThrows}
             />
           </ExpansionPanelDetails>
         </ExpansionPanel>
