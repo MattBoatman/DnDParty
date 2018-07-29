@@ -1,8 +1,10 @@
 import React from 'react';
 import Radio from '@material-ui/core/Radio';
 import { withStyles } from '@material-ui/core/styles';
+import RadioButtonUnchecked from '@material-ui/icons/RadioButtonUnchecked';
+import RadioButtonChecked from '@material-ui/icons/RadioButtonChecked';
 
-class RadioButton extends React.Component {
+class ControlledRadioButton extends React.Component {
   state = {
     isChecked: false,
   };
@@ -17,11 +19,16 @@ class RadioButton extends React.Component {
   render() {
     return (
       <Radio
-        style={{ unset: 'all' }}
         checked={this.state.isChecked}
         onClick={this.handleChange}
         value="spellSlot"
         className={this.props.classes.root}
+        icon={
+          <RadioButtonUnchecked style={{ width: '.5em', height: '.5em' }} />
+        }
+        checkedIcon={
+          <RadioButtonChecked style={{ width: '.5em', height: '.5em' }} />
+        }
       />
     );
   }
@@ -30,8 +37,8 @@ class RadioButton extends React.Component {
 const styles = {
   root: {
     flex: 'unset',
-    width: 'unset',
+    width: '50%',
     height: 'unset',
   },
 };
-export default withStyles(styles)(RadioButton);
+export default withStyles(styles)(ControlledRadioButton);

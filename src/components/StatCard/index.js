@@ -16,7 +16,11 @@ const StatCard = ({ stat, modifier, score, classes }) => {
   return (
     <StatWrapper>
       <MiddleText>
-        <Typography variant="display1" classes={{ display1: classes.display1 }}>
+        <Typography
+          variant="subheading"
+          align="center"
+          classes={{ display1: classes.display1 }}
+        >
           {stat}
         </Typography>
       </MiddleText>
@@ -45,7 +49,7 @@ const styles = {
   root: {
     display: 'inline-block',
     padding: '10px 15px',
-    width: 20,
+    width: 15,
   },
   display1: {
     fontSize: '1.125rem',

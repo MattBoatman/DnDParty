@@ -38,8 +38,8 @@ const defaultProps = {
     { type: 'Initiative', value: 4 },
     { type: 'Attack Modifier', value: 8 },
     { type: 'PP', value: 14 },
+    { type: 'Prof Bonus', value: 3 },
     { type: 'Speed', value: 25 },
-    { type: 'Spellcasting', value: 'CHA' },
   ],
   abilityScores: [
     { stat: 'STR', score: 14, modifier: 2 },
@@ -50,23 +50,23 @@ const defaultProps = {
     { stat: 'CHA', score: 20, modifier: 5 },
   ],
   skills: [
-    { modifier: 5, name: 'Acrobatics', ability: 'Dex' },
+    { modifier: 6, name: 'Acrobatics', ability: 'Dex' },
     { modifier: 2, name: 'Animal Handling', ability: 'Wis' },
     { modifier: 2, name: 'Arcana', ability: 'Int' },
     { modifier: 3, name: 'Athletics', ability: 'Str' },
-    { modifier: 7, name: 'Deception', ability: 'Cha' },
+    { modifier: 8, name: 'Deception', ability: 'Cha' },
     { modifier: 2, name: 'History', ability: 'Int' },
-    { modifier: 3, name: 'Insight', ability: 'Wis' },
-    { modifier: 9, name: 'Intimidation', ability: 'Cha' },
+    { modifier: 4, name: 'Insight', ability: 'Wis' },
+    { modifier: 11, name: 'Intimidation', ability: 'Cha' },
     { modifier: 2, name: 'Investigation', ability: 'Int' },
     { modifier: 2, name: 'Medicine', ability: 'Wis' },
     { modifier: 2, name: 'Nature', ability: 'Int' },
-    { modifier: 3, name: 'Perception', ability: 'Wis' },
-    { modifier: 7, name: 'Performance', ability: 'Cha' },
-    { modifier: 9, name: 'Persuasion', ability: 'Cha' },
+    { modifier: 4, name: 'Perception', ability: 'Wis' },
+    { modifier: 8, name: 'Performance', ability: 'Cha' },
+    { modifier: 11, name: 'Persuasion', ability: 'Cha' },
     { modifier: 2, name: 'Religion', ability: 'Int' },
     { modifier: 4, name: 'Sleight of Hand', ability: 'Dex' },
-    { modifier: 5, name: 'Stealth', ability: 'Dex' },
+    { modifier: 6, name: 'Stealth', ability: 'Dex' },
     { modifier: 2, name: 'Survival', ability: 'Wis' },
   ],
   savingThrows: [
@@ -77,11 +77,18 @@ const defaultProps = {
     { modifier: 4, ability: 'CON' },
     { modifier: 9, ability: 'CHA' },
   ],
-  currentHP: 36,
-  maxHP: 42,
+  currentHP: 48,
+  maxHP: 48,
   temporaryHP: 0,
   hitDice: 'd8+3',
   level: 5,
+  spellInformation: [
+    { level: 1, slots: 4 },
+    { level: 2, slots: 3 },
+    { level: 3, slots: 2 },
+  ],
+  trackerValue: 5,
+  trackerName: 'Bardic Inspiration',
 };
 class CharacterCard extends Component {
   state = {
@@ -140,7 +147,6 @@ class CharacterCard extends Component {
 
   handleEditClick = e => {
     e.stopPropagation();
-    console.log('cl');
   };
 
   render() {
@@ -169,10 +175,7 @@ class CharacterCard extends Component {
                 hitDice={this.props.hitDice}
                 level={this.props.level}
               />
-              <QuickStatWrapper>
-                <QuickStats quickStats={this.props.quickStats} />
-              </QuickStatWrapper>
-
+              <QuickStats quickStats={this.props.quickStats} />
               <AbilityWrapper>
                 {this.props.abilityScores.map((obj, idx) => (
                   <StatWrapper key={idx}>
@@ -212,6 +215,7 @@ class CharacterCard extends Component {
             <MoreInformation
               skills={this.props.skills}
               savingThrows={this.props.savingThrows}
+              spellInformation={this.props.spellInformation}
             />
           </ExpansionPanelDetails>
         </ExpansionPanel>
@@ -227,9 +231,7 @@ class CharacterCard extends Component {
 const AbilityWrapper = styled.span`
   display: flex;
   justify-content: flex-end;
-  margin-left: auto;
   margin-top: -30px;
-  flex-wrap: wrap;
   @media (max-width: 600px) {
     justify-content: space-between;
     margin: 0;
@@ -237,6 +239,7 @@ const AbilityWrapper = styled.span`
 `;
 const ContentWrapper = styled.span`
   display: flex;
+  justify-content: space-between;
   @media (max-width: 600px) {
     flex-direction: column;
   }

@@ -6,14 +6,17 @@ import Typography from '@material-ui/core/Typography';
 const StatList = ({ children, title, width }) => {
   return (
     <Wrapper width={width}>
-      <Typography variant="title">{title}</Typography>
+      <Typography variant="title" gutterBottom>
+        {title}
+      </Typography>
       <SkillsWrapper>{children}</SkillsWrapper>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  width: ${props => `${props.width}%`} @media (max-width: 650px) {
+  width: ${props => `${props.width}%`};
+  @media (max-width: 650px) {
     width: 100%;
   }
 `;

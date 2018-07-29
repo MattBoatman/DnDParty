@@ -2,7 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
+import ControlledRadioButton from '../SpellSlot/ControlledRadioButton'; //TODO move this into its own folder
 
+const stopClick = e => {
+  e.stopPropagation();
+};
 const CharacterInformation = ({
   characterName,
   race,
@@ -16,9 +20,12 @@ const CharacterInformation = ({
       <Typography variant="caption">
         {race}/{level} {classType}
       </Typography>
-      <Typography variant="caption">
-        Hit Dice: {level} {hitDice}
-      </Typography>
+      <HitWrapper>
+        <Typography variant="caption">Hit Dice: {hitDice}</Typography>
+        <HitDiceWrapper onClick={stopClick}>
+          {Array.from({ length: level }, (_, k) => <ControlledRadioButton />)}
+        </HitDiceWrapper>
+      </HitWrapper>
     </ContentWrapper>
   );
 };
@@ -31,6 +38,14 @@ const ContentWrapper = styled.span`
   @media (max-width: 600px) {
     margin: 0 auto;
   }
+`;
+
+const HitDiceWrapper = styled.span`
+  display: flex;
+`;
+
+const HitWrapper = styled.span`
+  display: flex;
 `;
 
 CharacterInformation.propTypes = {
