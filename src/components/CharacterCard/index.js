@@ -90,7 +90,7 @@ const defaultProps = {
     { level: 3, slots: 2 },
   ],
   trackerValue: 5,
-  trackerName: 'Bardic Inspiration',
+  trackerName: 'BI d8',
   weapons: [
     {
       id: 1,
@@ -134,9 +134,12 @@ const defaultProps = {
     },
   ],
   reminders: [
+    'Font of Inspiration: Regain Bardic Inspiration on short rest',
+    'Jack of all trades, add half prof bonus to all ability checks',
+    'Song of Rest, 1d6 during short rests',
     'Languages: Common, Dwarvish, Elvish',
     'Bag Pipes, Drums, Horns',
-    'Proficient with Brewers and Jewelers Tools',
+    'Brewers and Jewelers Tools',
     'Darkvision 60ft',
     'Advantage on saves vs Poison',
     'Stonecunning',
