@@ -5,7 +5,6 @@ import QuickStats from '../QuickStats';
 import StatCard from '../StatCard';
 import CharacterInformation from '../CharacterInformation';
 import styled from 'styled-components';
-import MoreInformation from '../MoreInformation';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import Remove from '@material-ui/icons/Remove';
@@ -15,6 +14,9 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import { withStyles } from '@material-ui/core/styles';
 import EditHealth from './EditHealth';
+import TableTab from '../MoreInformation/TableTab';
+import SpellSlotGroup from './SpellSlotGroup';
+import Tracker from './Tracker';
 
 const propTypes = {
   characterName: PropTypes.string,
@@ -89,6 +91,56 @@ const defaultProps = {
   ],
   trackerValue: 5,
   trackerName: 'Bardic Inspiration',
+  weapons: [
+    {
+      id: 1,
+      name: 'Grapier',
+      proficient: true,
+      range: 'Melee',
+      toHit: 7,
+      damage: '1d8+4',
+      damageType: 'Piercing',
+      description: 'Touching the hilt turns user purple',
+    },
+    {
+      id: 2,
+      name: 'Dagger',
+      proficient: true,
+      range: 'Melee 20/60ft',
+      toHit: 6,
+      damage: '1d4+3',
+      damageType: 'Piercing',
+      description: 'Finesse, light, thrown',
+    },
+    {
+      id: 3,
+      name: 'Rapier',
+      proficient: true,
+      range: 'Melee',
+      toHit: 6,
+      damage: '1d8+3',
+      damageType: 'Piercing',
+      description: 'Finesse',
+    },
+    {
+      id: 4,
+      name: 'Warhammer',
+      proficient: true,
+      range: 'Melee',
+      toHit: 5,
+      damage: '1d8+2',
+      damageType: 'Bludgeoning',
+      description: 'Versatile (1d10)',
+    },
+  ],
+  reminders: [
+    'Languages: Common, Dwarvish, Elvish',
+    'Bag Pipes, Drums, Horns',
+    'Proficient with Brewers and Jewelers Tools',
+    'Darkvision 60ft',
+    'Advantage on saves vs Poison',
+    'Stonecunning',
+  ],
 };
 class CharacterCard extends Component {
   state = {
@@ -150,13 +202,31 @@ class CharacterCard extends Component {
   };
 
   render() {
+    const {
+      classes,
+      characterName,
+      race,
+      classType,
+      hitDice,
+      level,
+      trackerName,
+      trackerValue,
+      savingThrows,
+      weapons,
+      reminders,
+      spellInformation,
+      skills,
+      quickStats,
+      abilityScores,
+    } = this.props;
+    const { maxHP, currentHP, temporaryHP } = this.state;
     return (
       <CharacterWrapper>
         <ExpansionPanel>
           <ExpansionPanelSummary
             classes={{
-              root: this.props.classes.root,
-              content: this.props.classes.content,
+              root: classes.root,
+              content: classes.content,
             }}
           >
             <Edit
@@ -169,15 +239,15 @@ class CharacterCard extends Component {
             />
             <ContentWrapper>
               <CharacterInformation
-                characterName={this.props.characterName}
-                race={this.props.race}
-                classType={this.props.classType}
-                hitDice={this.props.hitDice}
-                level={this.props.level}
+                characterName={characterName}
+                race={race}
+                classType={classType}
+                hitDice={hitDice}
+                level={level}
               />
-              <QuickStats quickStats={this.props.quickStats} />
+              <QuickStats quickStats={quickStats} />
               <AbilityWrapper>
-                {this.props.abilityScores.map((obj, idx) => (
+                {abilityScores.map((obj, idx) => (
                   <StatWrapper key={idx}>
                     <StatCard
                       stat={obj.stat}
@@ -197,9 +267,9 @@ class CharacterCard extends Component {
                 <Remove />
               </IconButton>
               <HealthIndicator
-                maxHP={this.state.maxHP}
-                currentHP={this.state.currentHP}
-                temporaryHP={this.state.temporaryHP}
+                maxHP={maxHP}
+                currentHP={currentHP}
+                temporaryHP={temporaryHP}
                 editHealth={this.openHealthModal}
               />
               <IconButton
@@ -211,11 +281,21 @@ class CharacterCard extends Component {
               </IconButton>
             </HealthBarWrapper>
           </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <MoreInformation
-              skills={this.props.skills}
-              savingThrows={this.props.savingThrows}
-              spellInformation={this.props.spellInformation}
+          <ExpansionPanelDetails classes={{ root: classes.expansionPanelRoot }}>
+            <CounterWrapper>
+              {spellInformation && (
+                <SpellSlotGroup spellInformation={spellInformation} />
+              )}
+              {trackerName && (
+                <Tracker name={trackerName} count={trackerValue} />
+              )}
+            </CounterWrapper>
+            <TableTab
+              weapons={weapons}
+              skills={skills}
+              savingThrows={savingThrows}
+              spellInformation={spellInformation}
+              reminders={reminders}
             />
           </ExpansionPanelDetails>
         </ExpansionPanel>
@@ -250,9 +330,6 @@ const StatWrapper = styled.div`
     margin-left: 0;
   }
 `;
-const QuickStatWrapper = styled.div`
-  margin: 0 auto;
-`;
 
 const CharacterWrapper = styled.div`
   width: 100%;
@@ -266,6 +343,12 @@ const HealthBarWrapper = styled.div`
   align-items: flex-end;
 `;
 
+const CounterWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
 const styles = {
   root: {
     padding: 0,
@@ -273,6 +356,9 @@ const styles = {
   content: {
     display: 'block',
     marginBottom: 0,
+  },
+  expansionPanelRoot: {
+    display: 'block',
   },
 };
 

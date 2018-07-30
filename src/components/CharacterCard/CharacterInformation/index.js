@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
-import ControlledRadioButton from '../SpellSlot/ControlledRadioButton'; //TODO move this into its own folder
+import ControlledRadioButton from '../ControlledRadioButton';
 
 const stopClick = e => {
   e.stopPropagation();
@@ -23,7 +23,9 @@ const CharacterInformation = ({
       <HitWrapper>
         <Typography variant="caption">Hit Dice: {hitDice}</Typography>
         <HitDiceWrapper onClick={stopClick}>
-          {Array.from({ length: level }, (_, k) => <ControlledRadioButton />)}
+          {Array.from({ length: level }, (_, k) => (
+            <ControlledRadioButton key={k} />
+          ))}
         </HitDiceWrapper>
       </HitWrapper>
     </ContentWrapper>

@@ -11,6 +11,7 @@ class ControlledRadioButton extends React.Component {
 
   handleChange = event => {
     event.preventDefault();
+    event.stopPropagation();
     this.setState(prevState => ({
       isChecked: !prevState.isChecked,
     }));
