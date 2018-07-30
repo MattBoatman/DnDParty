@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import HealthIndicator from '../HealthIndicator';
 import QuickStats from '../QuickStats';
 import StatCard from '../StatCard';
-import CharacterInformation from '../CharacterInformation';
+import CharacterInformation from './CharacterInformation';
 import styled from 'styled-components';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
